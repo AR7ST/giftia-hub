@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giftia 班のハブ</title>
+<style>
+  body { font-family: system-ui, "Hiragino Sans", "Meiryo", sans-serif; margin: 0; background: #f6f7fb; color: #222; line-height: 1.7; }
+  header { background: #1f3a93; color: #fff; padding: 24px 16px; text-align: center; }
+  header h1 { margin: 0; font-size: 1.6rem; }
+  header p { margin: 4px 0 0; opacity: .9; }
+  main { max-width: 880px; margin: 0 auto; padding: 16px; }
+  section { background: #fff; border-radius: 12px; padding: 16px 20px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  h2 { margin-top: 0; font-size: 1.2rem; border-left: 6px solid #1f3a93; padding-left: 8px; }
+  .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .links a { display: block; padding: 12px; border-radius: 8px; background: #eef2ff; color: #1f3a93; text-decoration: none; font-weight: bold; }
+  .links a small { display: block; font-weight: normal; color: #555; }
+  .flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+  .box { padding: 12px 16px; border-radius: 8px; color: #fff; text-align: center; min-width: 150px; }
+  .box small { display: block; opacity: .9; }
+  .front { background: #e0457b; } .api { background: #18a058; } .db { background: #f08c00; }
+  .arrow { font-size: 1.5rem; color: #888; }
+  ol li, ul li { margin: 4px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background: #f0f2f8; }
+  .warn { background: #fff7d6; border: 1px solid #f0c000; border-radius: 8px; padding: 8px 12px; }
+  footer { text-align: center; color: #888; font-size: .85rem; padding: 16px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Giftia 班のハブ</h1>
+  <p>できる日に1回、Giftia を少しずつよくしていく班の入口</p>
+</header>
+<main>
+
+<section>
+  <h2>入口（毎日ここから）</h2>
+  <div class="links">
+    <a href="https://github.com/AR7ST/giftia-frontend">giftia-frontend<small>画面（Next.js）・班のルールは README</small></a>
+    <a href="https://github.com/AR7ST/giftia-backend">giftia-backend<small>検索 API（FastAPI）</small></a>
+    <a href="https://github.com/AR7ST/giftia-frontend/pulls">PR 一覧（画面）<small>確認待ちの変更</small></a>
+    <a href="https://github.com/AR7ST/giftia-backend/pulls">PR 一覧（API）<small>確認待ちの変更</small></a>
+    <a href="https://github.com/users/AR7ST/projects/1">Giftia 改善ボード<small>やること・作業中・完了（GitHub Projects）</small></a>
+  </div>
+  <p><small>※ リポジトリとボードは非公開です。班のメンバーだけが開けます。</small></p>
+</section>
+
+<section>
+  <h2>全体の流れ</h2>
+  <div class="flow">
+    <div class="box front">画面<small>Next.js・3000番</small></div>
+    <div class="arrow">→</div>
+    <div class="box api">検索 API<small>FastAPI・8000番</small></div>
+    <div class="arrow">→</div>
+    <div class="box db">班の DB<small>MySQL</small></div>
+  </div>
+  <p>画面を変えるなら <b>frontend</b>、検索の中身（SQL）を変えるなら <b>backend</b>。</p>
+</section>
+
+<section>
+  <h2>改善の流れ（できる日に1回）</h2>
+  <ol>
+    <li>やりたいことを Issue（やることカード）にして、改善ボードに貼る。担当を決める</li>
+    <li><code>git pull</code> で最新にしてから、新しいブランチで変える</li>
+    <li>自分の PC で動かして、変更前／変更後のスクショを撮る</li>
+    <li>PR を出す → 班のだれか1人以上が見て OK → main に取りこむ</li>
+    <li>このページの「改善ログ」に1行足す</li>
+  </ol>
+  <p>班のメンバーなら、<b>だれでも</b>改善できます（班長だけではありません）。</p>
+</section>
+
+<section>
+  <h2>ルールの要点</h2>
+  <ul>
+    <li><b>main に直接 push しない。</b>変更はブランチ＋PR で</li>
+    <li>作業の前に <code>git pull</code>。「今日はだれが何を」を Slack で軽く決める</li>
+    <li>1つの PR には1つの変更だけ</li>
+    <li><b>パスワードなどの秘密（.env の中身）は、GitHub・Slack・生成 AI に貼らない</b></li>
+  </ul>
+  <p>くわしくは giftia-frontend の README（2章）。</p>
+  <p class="warn">⚠ このページは公開ページです。秘密の情報・教材の内容・本名・データが写ったスクショは載せません。</p>
+</section>
+
+<section>
+  <h2>改善ログ（Giftia の成長日記）</h2>
+  <table>
+    <tr><th>日付</th><th>変えたこと</th><th>PR</th></tr>
+    <tr><td>2026-11-01</td><td>画面を検索 API につないだ（2週目）</td><td>frontend #1</td></tr>
+    <tr><td>2026-11-01</td><td>README を班の案内とルールに書き直した</td><td>frontend #2</td></tr>
+  </table>
+</section>
+
+</main>
+<footer>Giftia 班 ・ 更新したら PR で</footer>
+</body>
+</html>
