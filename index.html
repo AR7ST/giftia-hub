@@ -286,17 +286,7 @@ const HUB = {
       </div>
       <div class="map-detail" id="map-detail" aria-live="polite"></div>
     </div>
-  </div>
-
-  <div class="card" style="margin-top:14px">
-    <h3>Giftia コードラボ（コードを読みながら試す）</h3>
-    <p class="muted">実際のコードを見ながら、画面をタップしたり数字を変えたりできるページです。コードの中身は公開できないので、Claude の非公開ページに置いています。開けないときは、タケに共有をたのんでください。</p>
-    <div class="lab-entry">
-      <a href="https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j#map">🗺 画面マップ<small>タップでコードの行が光る</small></a>
-      <a href="https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j#lab">🧪 変えてみよう<small>7つの実験：文字・件数・並び順・色…</small></a>
-      <a href="https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j#trip">🚃 検索の旅<small>ボタンから DB まで12ステップ</small></a>
-      <a href="https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j#quiz">✅ クイズ<small>どこを変える？ 6問</small></a>
-    </div>
+    <div class="btns"><a class="btn pink" href="map.html">🗺 コードの地図をもっと見る →</a><a class="btn ghost" href="screen.html">画面の地図</a><a class="btn ghost" href="flow.html">動きの地図</a><a class="btn ghost" href="change.html">変える地図</a></div>
   </div>
 
   <h2 class="sec-title">🍻 メンバー <span class="dots"><i></i><i></i><i></i></span></h2>
@@ -364,7 +354,8 @@ const HUB = {
         <tr><td>11/07</td><td>AI の使い方ルール（AGENTS.md）を作った</td><td>#4</td></tr>
         <tr><td>11/07</td><td>画面と API を1つのリポジトリ giftia にまとめた（モノレポ化）</td><td>#6</td></tr>
         <tr><td>11/07</td><td>このハブを東京の夜景デザインにした</td><td>hub</td></tr>
-        <tr><td>11/08</td><td>画面マップとコードラボへの入口を足した</td><td>hub</td></tr>
+        <tr><td>11/08</td><td>画面マップを足した</td><td>hub</td></tr>
+        <tr><td>11/08</td><td>コードの地図（画面・動き・変える）を足した</td><td>hub</td></tr>
       </table>
     </div>
   </div>
@@ -466,7 +457,6 @@ const HUB = {
   document.getElementById("updated").textContent = HUB.updated;
   // 画面マップ
   const R = "https://github.com/AR7ST/giftia/blob/main/";
-  const LAB = "https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j";
   const MAP = {
     1: ["タイトル「Giftia」", "お店の<b>看板</b>。文字は画面のファイルに、色と大きさは見た目のファイルに書いてある。",
         [["page.tsx 40行", "giftia-frontend/app/page.tsx#L40"], ["globals.css 6行", "giftia-frontend/app/globals.css#L6"]], "map"],
@@ -490,8 +480,7 @@ const HUB = {
     document.querySelectorAll("#gscreen .hs").forEach(h => h.classList.toggle("on", +h.dataset.hs === n));
     const m = MAP[n];
     det.innerHTML = `<span class="badge">部品 ${n}</span><h3>${m[0]}</h3><div class="say">${m[1]}</div>
-      <div class="filelinks">${m[2].map(f => `<a href="${R}${f[1]}" target="_blank" rel="noopener">${f[0]} ↗</a>`).join("")}</div>
-      <div class="btns"><a class="btn pink" href="${LAB}#${m[3]}" target="_blank" rel="noopener">コードラボで試す →</a></div>`;
+      <div class="filelinks">${m[2].map(f => `<a href="${R}${f[1]}" target="_blank" rel="noopener">${f[0]} ↗</a>`).join("")}</div>`;
   }
   document.querySelectorAll("#gscreen .hs").forEach(h => {
     h.addEventListener("click", e => { e.stopPropagation(); pick(+h.dataset.hs); });
