@@ -46,7 +46,13 @@
 <p class="vision-check"><b>できたかの確認：</b>選んだ候補と理由が相談文に入り、表示・コピーできること。</p></section>
 </div>
 
+<h2 class="sec-title" id="code-trace">いまのコードの、どこを変える？</h2>
+<p>要件を、いまの giftia のコードの場所に結びつけた下調べです。行のリンクは GitHub（非公開）のその行を開きます。<b>すでにあるもの</b>と<b>足すもの</b>を分けると、作業の大きさが見えます。</p>
+<div class="vision-cards" id="trace"></div>
+<p class="muted">行番号は2026年11月7日の giftia（PR #6 のあと）。コードを変えたら <span class="mono">assets/map.js</span> の表を直します。どの順で作るかは班で決めます。</p>
+
 <h2 class="sec-title">現在から、何が変わる？</h2>
+<p class="muted vision-scroll-hint">表は横にスクロールできます →</p>
 <div class="vision-table"><table class="t"><thead><tr><th scope="col">見るところ</th><th scope="col">現在の検索</th><th scope="col">これからの計画</th></tr></thead><tbody>
 <tr><th scope="row">予算</th><td>価格帯を選ぶ</td><td>人数と1人あたり予算から上限を計算</td></tr>
 <tr><th scope="row">並び順</th><td>販売数 → 商品ID</td><td>販売数 → 評価 → 商品ID（暫定）</td></tr>
@@ -77,5 +83,32 @@
 <footer>Giftia 班（クラス5・東京 Drinking Party）</footer>
 </main>
 <script src="assets/map.js"></script>
+<script>
+(function () {
+  const T = [
+    ["FR-01", "be", "共同予算で探す", [
+      ["ある", "在庫ありだけにしぼる", ["whereInit"]],
+      ["ある", "値段の上限でしぼる（API はもう price_max を受け取れる）", ["aPrice", "wPrice"]],
+      ["足す", "画面に「人数」と「1人あたり予算」の入力欄。かけ算して上限にする", ["form", "condType"]],
+      ["足す", "伝書鳩が上限を price_max として送る", ["params"]],
+      ["変える", "並び順に「評価の高い順」を2番目に入れる", ["orderBy"]],
+    ]],
+    ["FR-02", "fe", "比べる材料をそろえる", [
+      ["ある", "商品名・価格・評価をカードに出す", ["card"]],
+      ["足す", "説明（description）を取る列に入れ、名札を付け替えて渡す", ["sqlSelect", "toGift", "giftType"]],
+      ["変える", "評価なしを 0 にしている所を、「ない（不明）」として渡す", ["toGift"]],
+      ["足す", "カードに説明と「不明」の表示", ["card"]],
+    ]],
+    ["FR-03", "css", "理由つきで相談する", [
+      ["足す", "カードに「候補に入れる」（最大3件）と理由の入力", ["card", "mapCards"]],
+      ["足す", "結果の下に相談文の表示と「コピー」ボタン（API は変えない）", ["resultsArea"]],
+    ]],
+  ];
+  const tag = { "ある": "pill be", "足す": "pill fe", "変える": "pill db" };
+  const el = document.getElementById("trace");
+  if (!el || typeof ref !== "function") return;
+  el.innerHTML = T.map(([id, kind, name, rows]) => `<section class="card"><span class="pill ${kind}">${id}</span><h3>${name}</h3><ul class="trace-list">${rows.map(([st, txt, keys]) => `<li><span class="${tag[st]}">${st}</span> ${txt}<div class="refs">${keys.map(k => k === "toGift" && txt.includes("0 に") ? refL("main", 87, 87, "評価なし") : ref(k)).join("")}</div></li>`).join("")}</ul></section>`).join("");
+})();
+</script>
 </body>
 </html>
