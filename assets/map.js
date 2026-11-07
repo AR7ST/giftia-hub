@@ -10,7 +10,8 @@ const F = {
   main: "backend/main.py",
   db: "backend/database.py",
 };
-const SHORT = { page: "page.tsx", card: "ResultCard.tsx", api: "api.ts", css: "globals.css", main: "main.py", db: "database.py" };
+const SHORT = { page: "page.tsx", card: "ResultCard.tsx", api: "api.ts", css: "globals.css", main: "main.py", db: "database.py", layout: "layout.tsx" };
+F.layout = "giftia-frontend/app/layout.tsx";
 const LINES = {
   // page.tsx（画面）
   useClient: ["page", 5, 5], imports: ["page", 7, 9],
@@ -54,6 +55,11 @@ function label(key) {
 function ref(key, text) {
   return `<a class="ref" href="${url(key)}" target="_blank" rel="noopener">${label(key)}${text ? "｜" + text : ""} ↗</a>`;
 }
+/* 表にない行は、ファイル名と行番号で直接リンクする */
+function refL(f, a, b, text) {
+  const u = REPO + F[f] + "#L" + a + (b > a ? "-L" + b : "");
+  return `<a class="ref" href="${u}" target="_blank" rel="noopener">${SHORT[f]} ${a}${b > a ? "〜" + b : ""}行${text ? "｜" + text : ""} ↗</a>`;
+}
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 
 /* 説明用の例の商品（班の DB のデータではない） */
@@ -95,8 +101,10 @@ function cardHTML(g, i, opt = {}) {
 /* ページ下の地図ナビ */
 const PAGES = [
   ["map.html", "🗺 地図の入口"], ["screen.html", "画面の地図"], ["flow.html", "動きの地図"], ["change.html", "変える地図"],
+  ["data.html", "データの地図"], ["files.html", "ファイルの地図"], ["words.html", "ことばの地図"],
 ];
 document.addEventListener("DOMContentLoaded", () => {
   const nav = document.getElementById("mapnav");
+  if (nav) nav.insertAdjacentHTML("beforebegin", `<p class="muted">行のリンクが「404」になるときは、そのブラウザで <a href="https://github.com/login" target="_blank" rel="noopener">GitHub にログイン</a>してください（giftia は非公開のため）。</p>`);
   if (nav) nav.innerHTML = PAGES.map(([h, t]) => `<a class="btn${location.pathname.endsWith(h) ? " pink" : ""}" href="${h}">${t}</a>`).join(" ") + ` <a class="btn" href="./">ハブにもどる</a>`;
 });
