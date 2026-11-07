@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>コードの地図 ｜ 東京 Drinking Party</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/map.css">
+<style>
+  .pages { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .pg { text-decoration: none; display: block; }
+  .pg.off { opacity: .55; pointer-events: none; }
+  .pg h3 { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+  .pg ul { margin: 6px 0 0; padding-left: 1.2em; color: var(--muted); font-size: .9rem; }
+  .pg:hover .card { border-color: var(--pink); }
+  .road { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .road li { counter-increment: s; display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; align-items: start; }
+  .road li::before { content: counter(s); width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--pink); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: .85rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="kicker">GIFTIA ・ CODE MAP</span><a href="./">← ハブにもどる</a></div>
+  <h1><span class="p">コードの地図</span></h1>
+  <p class="lead">Giftia の「画面のここ」が「コードのどこ」なのかを、地図にしました。コードの中身はここには載せていません。行のリンクを押すと GitHub（非公開。班のメンバーと講師だけ）のその行が開きます。商品は説明用の例です。</p>
+
+  <h2 class="sec-title">おすすめの読む順番</h2>
+  <div class="card">
+    <ol class="road">
+      <li><span><b>画面の地図</b>で、画面を触りながら「メモ帳（状態）」がどう変わるかを見る</span></li>
+      <li><span><b>動きの地図</b>で、検索ボタンから DB までの12ステップを最後まで進める</span></li>
+      <li><span><b>変える地図</b>で、「変えたいこと」から変える1行を探す。発展2の前にもう一度</span></li>
+    </ol>
+  </div>
+
+  <h2 class="sec-title">地図の一覧 <small>1回目：3ページ</small></h2>
+  <div class="pages">
+    <a class="pg" href="screen.html"><div class="card"><h3>画面の地図 <span class="pill fe">画面</span></h3>
+      <ul><li>画面マップ（完全版・12か所）</li><li>メモ帳（7つの箱）の動き</li><li>操作 → 動く関数</li><li>見た目 → globals.css</li></ul></div></a>
+    <a class="pg" href="flow.html"><div class="card"><h3>動きの地図 <span class="pill be">流れ</span></h3>
+      <ul><li>検索の旅（12ステップ）</li><li>待ち時間（async / await）</li><li>URL の部品マップ</li><li>条件の形が変わっていく様子</li></ul></div></a>
+    <a class="pg" href="change.html"><div class="card"><h3>変える地図 <span class="pill css">変更</span></h3>
+      <ul><li>変えたいこと逆引き（10こ）</li><li>要件定義書 → 変える場所</li><li>1週目 → 2週目で変わったところ</li></ul></div></a>
+    <div class="pg off"><div class="card"><h3>データの地図 <span class="pill">2回目</span></h3><ul><li>名札の付け替え</li><li>注文書（SQL）の組み立て</li></ul></div></div>
+    <div class="pg off"><div class="card"><h3>ファイルの地図 <span class="pill">2回目</span></h3><ul><li>フォルダマップ</li><li>1行ずつ読むガイド</li><li>穴埋め復習</li></ul></div></div>
+    <div class="pg off"><div class="card"><h3>ことばの地図 <span class="pill">2回目</span></h3><ul><li>お店のたとえ</li><li>用語 → コードの場所</li><li>クイズ</li></ul></div></div>
+    <div class="pg off"><div class="card"><h3>困ったときの地図 <span class="pill">3回目</span></h3><ul><li>エラー・設定・秘密を守る場所・開発環境</li></ul></div></div>
+    <div class="pg off"><div class="card"><h3>GitHub の地図 <span class="pill">3回目</span></h3><ul><li>GitHub の流れ・成長の年表</li></ul></div></div>
+  </div>
+
+  <h2 class="sec-title">この地図の約束</h2>
+  <div class="card">
+    <ul>
+      <li>コードの中身・教材の内容・.env・DB のデータは載せない（このページは公開）</li>
+      <li>説明は自分たちの言葉。コードは GitHub で読む</li>
+      <li>行番号は 2026-11-07 の main（PR #6 のあと）。コードを変えたら <span class="mono">assets/map.js</span> の表を直す</li>
+    </ul>
+  </div>
+  <footer>Giftia 班（クラス5・東京 Drinking Party）</footer>
+</div>
+<script src="assets/map.js"></script>
+</body>
+</html>
