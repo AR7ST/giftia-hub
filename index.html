@@ -127,6 +127,39 @@
     .who { grid-template-columns: 5.5em 1fr 3em; }
   }
   @media (prefers-reduced-motion: reduce) { .star, .win { animation: none } }
+
+  /* ===== 画面マップ ===== */
+  .map-wrap { display: grid; gap: 14px; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); align-items: start; }
+  @media (max-width: 760px) { .map-wrap { grid-template-columns: minmax(0, 1fr); } }
+  .gscreen { position: relative; background: #fafaf9; color: #1f2933; border-radius: 14px; padding: 12px; font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; font-size: 13.5px; line-height: 1.5; box-shadow: 0 0 0 6px #05071a, 0 10px 30px rgba(0,0,0,.5); }
+  .gscreen .ex { position: absolute; top: 8px; right: 10px; font-size: 10.5px; color: #fff; background: #9aa5b1; border-radius: 4px; padding: 0 6px; }
+  .gscreen .gt { font-size: 21px; font-weight: 700; color: #1b3a5c; }
+  .gscreen .gm { display: flex; gap: 6px; }
+  .gscreen .gm span { font-size: 12px; padding: 3px 10px; border: 1px solid #e4e7eb; background: #fff; border-radius: 999px; }
+  .gscreen .gm span.on { background: #1b3a5c; color: #fff; border-color: #1b3a5c; }
+  .gscreen .gf { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
+  .gscreen .gq, .gscreen .gs, .gscreen .gb { font-size: 12.5px; padding: 6px 8px; border: 1px solid #e4e7eb; border-radius: 6px; background: #fff; }
+  .gscreen .gq { flex: 1 1 140px; color: #9aa5b1; }
+  .gscreen .gb { background: #1b3a5c; color: #fff; border: none; min-width: 60px; text-align: center; }
+  .gscreen .gsum { color: #616e7c; font-size: 12px; margin: 4px 0; }
+  .gscreen .gc { border: 1px solid #e4e7eb; border-radius: 10px; padding: 8px 10px; background: #fff; margin-top: 8px; }
+  .gscreen .gc p { margin: 1px 0; } .gscreen .gc .gn { font-weight: 700; } .gscreen .gc .gp { font-weight: 700; font-size: 15px; } .gscreen .gc .gmeta { color: #616e7c; font-size: 11.5px; }
+  .hs { position: relative; display: inline-block; border-radius: 8px; outline: 2px dashed transparent; outline-offset: 2px; cursor: pointer; }
+  div.hs { display: block; }
+  .hs:hover, .hs.on { outline-color: var(--pink); }
+  .hs .pin { position: absolute; top: -9px; left: -9px; z-index: 2; width: 19px; height: 19px; border-radius: 50%; background: var(--pink); color: #fff; font: 800 11px/19px system-ui, sans-serif; text-align: center; box-shadow: 0 0 8px rgba(255,79,163,.8); }
+  .hs.on .pin { background: var(--yellow); color: #1b1035; }
+  .hs:focus-visible { outline-color: var(--yellow); }
+  .map-detail h3 { margin: 2px 0 8px; }
+  .map-detail .say { padding: 10px 12px; border-radius: 12px; border: 1px dashed rgba(56,225,255,.6); margin: 8px 0; }
+  .map-detail .say b { color: var(--cyan); }
+  .filelinks { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+  .filelinks a { text-decoration: none; font-size: .82rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.04); font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .filelinks a:hover { border-color: var(--cyan); color: var(--cyan); }
+  .lab-entry { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-top: 10px; }
+  .lab-entry a { text-decoration: none; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.05); font-weight: 800; }
+  .lab-entry a small { display: block; font-weight: 500; color: var(--muted); font-size: .8rem; }
+  .lab-entry a:hover { border-color: var(--pink); }
 </style>
 </head>
 <body>
@@ -230,6 +263,42 @@ const HUB = {
     </div>
   </div>
 
+  <h2 class="sec-title">🗺 画面マップ <span class="dots"><i></i><i></i><i></i></span></h2>
+  <div class="card">
+    <p class="muted">Giftia の検索画面の番号をタップすると、その部分を作っているファイルと行がわかります。ファイル名を押すと GitHub のその行が開きます（非公開。班のメンバーと講師だけ）。商品は説明用の例です。</p>
+    <div class="map-wrap">
+      <div class="gscreen" id="gscreen">
+        <span class="ex">例</span>
+        <div class="hs" data-hs="1" tabindex="0" role="button" aria-label="1 タイトル"><span class="pin">1</span><div class="gt">Giftia</div></div>
+        <div class="hs" data-hs="2" tabindex="0" role="button" aria-label="2 タブ" style="margin-top:6px"><span class="pin">2</span><div class="gm"><span class="on">いまの検索</span><span>取引先へのお礼</span></div></div>
+        <div class="gf">
+          <span class="hs" data-hs="3" tabindex="0" role="button" aria-label="3 入力欄" style="flex:1 1 140px"><span class="pin">3</span><span class="gq" style="display:block">キーワード（例：送別 お菓子）</span></span>
+          <span class="hs" data-hs="4" tabindex="0" role="button" aria-label="4 カテゴリー"><span class="pin">4</span><span class="gs" style="display:block">すべてのカテゴリー ▾</span></span>
+          <span class="hs" data-hs="5" tabindex="0" role="button" aria-label="5 検索ボタン"><span class="pin">5</span><span class="gb" style="display:block">検索</span></span>
+        </div>
+        <div class="hs" data-hs="6" tabindex="0" role="button" aria-label="6 件数"><span class="pin">6</span><p class="gsum">上位 20 件</p></div>
+        <div class="hs" data-hs="7" tabindex="0" role="button" aria-label="7 結果カード"><span class="pin">7</span>
+          <div class="gc"><p class="gmeta">1位・食品・みなと製菓</p><p class="gn">ありがとうの焼き菓子 12個入</p>
+            <span class="hs" data-hs="8" tabindex="0" role="button" aria-label="8 値段"><span class="pin">8</span><span class="gp">3,240円</span></span>
+            <p class="gmeta">評価4.6（128件）</p></div>
+        </div>
+        <div class="gc"><p class="gmeta">2位・生活雑貨・ふわり織</p><p class="gn">今治のフェイスタオル 2枚</p><p class="gp">3,850円</p><p class="gmeta">評価4.4（86件）</p></div>
+      </div>
+      <div class="map-detail" id="map-detail" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h3>Giftia コードラボ（コードを読みながら試す）</h3>
+    <p class="muted">実際のコードを見ながら、画面をタップしたり数字を変えたりできるページです。コードの中身は公開できないので、Claude の非公開ページに置いています。開けないときは、タケに共有をたのんでください。</p>
+    <div class="lab-entry">
+      <a href="https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j#map">🗺 画面マップ<small>タップでコードの行が光る</small></a>
+      <a href="https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j#lab">🧪 変えてみよう<small>7つの実験：文字・件数・並び順・色…</small></a>
+      <a href="https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j#trip">🚃 検索の旅<small>ボタンから DB まで12ステップ</small></a>
+      <a href="https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j#quiz">✅ クイズ<small>どこを変える？ 6問</small></a>
+    </div>
+  </div>
+
   <h2 class="sec-title">🍻 メンバー <span class="dots"><i></i><i></i><i></i></span></h2>
   <div class="grid">
     <div class="card member"><div class="avatar m1">タ</div><div class="role">班長</div><h3>タケ</h3>
@@ -295,6 +364,7 @@ const HUB = {
         <tr><td>11/07</td><td>AI の使い方ルール（AGENTS.md）を作った</td><td>#4</td></tr>
         <tr><td>11/07</td><td>画面と API を1つのリポジトリ giftia にまとめた（モノレポ化）</td><td>#6</td></tr>
         <tr><td>11/07</td><td>このハブを東京の夜景デザインにした</td><td>hub</td></tr>
+        <tr><td>11/08</td><td>画面マップとコードラボへの入口を足した</td><td>hub</td></tr>
       </table>
     </div>
   </div>
@@ -394,6 +464,40 @@ const HUB = {
   document.getElementById("totalAll").textContent = total;
   document.getElementById("barAll").style.width = (total ? Math.round(done / total * 100) : 0) + "%";
   document.getElementById("updated").textContent = HUB.updated;
+  // 画面マップ
+  const R = "https://github.com/AR7ST/giftia/blob/main/";
+  const LAB = "https://claude.ai/artifact/MuVGNu6YzLsscWCAaWrG5j";
+  const MAP = {
+    1: ["タイトル「Giftia」", "お店の<b>看板</b>。文字は画面のファイルに、色と大きさは見た目のファイルに書いてある。",
+        [["page.tsx 40行", "giftia-frontend/app/page.tsx#L40"], ["globals.css 6行", "giftia-frontend/app/globals.css#L6"]], "map"],
+    2: ["タブ", "<b>メモ帳</b>に「いまどちらのタブか」を覚えておき、押したら書きかえる。選ばれている方だけ濃い色になる。",
+        [["page.tsx 13行（覚える箱）", "giftia-frontend/app/page.tsx#L13"], ["page.tsx 43〜46行（ボタン）", "giftia-frontend/app/page.tsx#L43-L46"]], "map"],
+    3: ["キーワードの入力欄", "1文字打つたびに、打った言葉が<b>メモ帳</b>に書き写される。薄い字の例文は検索には使われない。",
+        [["page.tsx 14行（覚える箱）", "giftia-frontend/app/page.tsx#L14"], ["page.tsx 51行（入力欄）", "giftia-frontend/app/page.tsx#L51"]], "lab"],
+    4: ["カテゴリーの選択", "選べる種類は、選択肢の行の数だけ。1行足すと1つ増える。名前は DB の文字とそろえる。",
+        [["page.tsx 52〜57行", "giftia-frontend/app/page.tsx#L52-L57"]], "lab"],
+    5: ["検索ボタン", "押すと<b>伝書鳩</b>に条件を持たせて受付（API）へ飛ばし、帰ってくるまで待つ。",
+        [["page.tsx 69行（ボタン）", "giftia-frontend/app/page.tsx#L69"], ["page.tsx 22〜35行（押したときの処理）", "giftia-frontend/app/page.tsx#L22-L35"], ["api.ts 29〜45行（伝書鳩）", "giftia-frontend/lib/api.ts#L29-L45"]], "trip"],
+    6: ["「上位 20 件」", "受付（API）が<b>決まった件数</b>だけ返し、画面はその数を数えて出している。件数を変えるのは API 側。",
+        [["page.tsx 77行（表示）", "giftia-frontend/app/page.tsx#L77"], ["main.py 44行（20件の正体）", "backend/main.py#L44"]], "lab"],
+    7: ["結果のカード", "同じ<b>カードの型紙</b>を、結果の数だけ並べている。型紙を1か所直すと全部のカードが変わる。",
+        [["ResultCard.tsx（型紙）", "giftia-frontend/app/ResultCard.tsx#L4-L12"], ["page.tsx 79行（並べる）", "giftia-frontend/app/page.tsx#L79"], ["main.py 71行（並び順）", "backend/main.py#L71"]], "lab"],
+    8: ["値段", "DB の数を、受付が<b>名札を付け替えて</b>画面に渡し、カード側でカンマを付けて見せている。",
+        [["ResultCard.tsx 9行", "giftia-frontend/app/ResultCard.tsx#L9"], ["main.py 79〜89行（名札の付け替え）", "backend/main.py#L79-L89"]], "map"],
+  };
+  const det = document.getElementById("map-detail");
+  function pick(n) {
+    document.querySelectorAll("#gscreen .hs").forEach(h => h.classList.toggle("on", +h.dataset.hs === n));
+    const m = MAP[n];
+    det.innerHTML = `<span class="badge">部品 ${n}</span><h3>${m[0]}</h3><div class="say">${m[1]}</div>
+      <div class="filelinks">${m[2].map(f => `<a href="${R}${f[1]}" target="_blank" rel="noopener">${f[0]} ↗</a>`).join("")}</div>
+      <div class="btns"><a class="btn pink" href="${LAB}#${m[3]}" target="_blank" rel="noopener">コードラボで試す →</a></div>`;
+  }
+  document.querySelectorAll("#gscreen .hs").forEach(h => {
+    h.addEventListener("click", e => { e.stopPropagation(); pick(+h.dataset.hs); });
+    h.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); pick(+h.dataset.hs); } });
+  });
+  pick(5);
 })();
 </script>
 </body>
