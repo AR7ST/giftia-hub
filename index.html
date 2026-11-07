@@ -3,97 +3,398 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Giftia 班のハブ</title>
+<title>東京 Drinking Party 開発ハブ</title>
+<meta name="description" content="Giftia 班（東京 Drinking Party）の入口ページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&display=swap" rel="stylesheet">
 <style>
-  body { font-family: system-ui, "Hiragino Sans", "Meiryo", sans-serif; margin: 0; background: #f6f7fb; color: #222; line-height: 1.7; }
-  header { background: #1f3a93; color: #fff; padding: 24px 16px; text-align: center; }
-  header h1 { margin: 0; font-size: 1.6rem; }
-  header p { margin: 4px 0 0; opacity: .9; }
-  main { max-width: 880px; margin: 0 auto; padding: 16px; }
-  section { background: #fff; border-radius: 12px; padding: 16px 20px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
-  h2 { margin-top: 0; font-size: 1.2rem; border-left: 6px solid #1f3a93; padding-left: 8px; }
-  .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-  .links a { display: block; padding: 12px; border-radius: 8px; background: #eef2ff; color: #1f3a93; text-decoration: none; font-weight: bold; }
-  .links a small { display: block; font-weight: normal; color: #555; }
-  .flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
-  .box { padding: 12px 16px; border-radius: 8px; color: #fff; text-align: center; min-width: 150px; }
-  .box small { display: block; opacity: .9; }
-  .front { background: #e0457b; } .api { background: #18a058; } .db { background: #f08c00; }
-  .arrow { font-size: 1.5rem; color: #888; }
-  ol li, ul li { margin: 4px 0; }
-  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
-  th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; }
-  th { background: #f0f2f8; }
-  .warn { background: #fff7d6; border: 1px solid #f0c000; border-radius: 8px; padding: 8px 12px; }
-  footer { text-align: center; color: #888; font-size: .85rem; padding: 16px; }
+  :root {
+    --night1: #070b1f; --night2: #141a46; --night3: #3a1d5e;
+    --pink: #ff4fa3; --cyan: #38e1ff; --yellow: #ffd23f; --red: #ff3b3b; --green: #3ee59a;
+    --text: #eef1ff; --muted: #a9b0d9; --card: rgba(255,255,255,.06); --line: rgba(255,255,255,.14);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--text); line-height: 1.7;
+    font-family: "M PLUS Rounded 1c", system-ui, "Hiragino Sans", "Meiryo", sans-serif;
+    background: var(--night1);
+  }
+  a { color: inherit; }
+
+  /* ===== 夜景のヒーロー ===== */
+  .hero {
+    position: relative; overflow: hidden; padding: 28px 16px 0;
+    background: linear-gradient(180deg, var(--night1) 0%, var(--night2) 45%, var(--night3) 78%, #6b2a6e 100%);
+  }
+  .stars { position: absolute; inset: 0; pointer-events: none; }
+  .star { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: twinkle 3s infinite ease-in-out; }
+  @keyframes twinkle { 0%,100% { opacity: .2 } 50% { opacity: 1 } }
+  .moon { position: absolute; top: 26px; right: 7%; width: 54px; height: 54px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fffbe6, #ffe9a3 60%, #e8c66a);
+    box-shadow: 0 0 40px 12px rgba(255,233,163,.25); }
+  .hero-inner { position: relative; z-index: 2; max-width: 920px; margin: 0 auto; }
+  .kicker { display: inline-block; font-weight: 800; letter-spacing: .2em; font-size: .8rem; color: var(--cyan);
+    border: 1px solid var(--cyan); border-radius: 999px; padding: 2px 12px; text-shadow: 0 0 8px var(--cyan); }
+  .hero h1 { margin: 10px 0 0; font-weight: 800; font-size: clamp(2rem, 8vw, 3.6rem); line-height: 1.15; }
+  .neon-pink { color: #fff; text-shadow: 0 0 6px var(--pink), 0 0 18px var(--pink), 0 0 36px var(--pink); }
+  .neon-cyan { color: #fff; text-shadow: 0 0 6px var(--cyan), 0 0 18px var(--cyan), 0 0 36px var(--cyan); }
+  .hero .sub { margin: 6px 0 0; color: var(--muted); }
+
+  /* 路線図（進み具合） */
+  .line { margin: 26px 0 0; }
+  .line-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .pct { font-weight: 800; font-size: 1.1rem; }
+  .badge { font-weight: 800; font-size: .85rem; color: #1b1035; background: var(--yellow); border-radius: 999px; padding: 2px 12px; box-shadow: 0 0 16px rgba(255,210,63,.6); }
+  .track { position: relative; height: 16px; margin: 22px 8px 0; border-radius: 999px; background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.5); }
+  .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: linear-gradient(90deg, var(--yellow), var(--pink)); box-shadow: 0 0 14px var(--pink); }
+  .stn { position: absolute; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--night1); border: 4px solid #fff; }
+  .stn.done { border-color: var(--yellow); }
+  .train { position: absolute; top: 50%; margin: -19px 0 0 -19px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--night2); border: 4px solid var(--yellow); box-shadow: 0 0 18px 4px rgba(255,210,63,.7); font-size: 18px; }
+  .stn-labels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 20px; }
+  .stage { border: 2px solid var(--line); border-radius: 14px; padding: 8px 6px; text-align: center; background: rgba(7,11,31,.45); }
+  .stage b { display: block; font-size: .72rem; letter-spacing: .12em; }
+  .stage span { display: block; font-weight: 800; font-size: .95rem; }
+  .stage small { color: var(--muted); font-size: .72rem; }
+  .stage.now { border-color: var(--yellow); box-shadow: 0 0 14px rgba(255,210,63,.5); }
+  .s1 b { color: var(--yellow) } .s2 b { color: var(--cyan) } .s3 b { color: var(--pink) } .s4 b { color: var(--red) }
+
+  .skyline { position: relative; z-index: 1; display: block; width: 100%; height: 170px; margin-top: 18px; }
+  .win { animation: blink 4s infinite; }
+  @keyframes blink { 0%,100% { opacity: .95 } 50% { opacity: .35 } }
+  .river { height: 26px; background: linear-gradient(180deg, #2a1640, #0b0d24); position: relative; z-index: 1; }
+  .river::after { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 3px;
+    background: repeating-linear-gradient(90deg, rgba(255,79,163,.6) 0 18px, transparent 18px 40px, rgba(56,225,255,.6) 40px 52px, transparent 52px 80px); filter: blur(1px); }
+
+  /* ===== 本文 ===== */
+  main { max-width: 920px; margin: 0 auto; padding: 8px 16px 24px; }
+  .sec-title { display: inline-flex; align-items: center; gap: 10px; margin: 30px 0 12px; padding: 6px 16px; border-radius: 12px;
+    font-weight: 800; font-size: 1.15rem; background: rgba(255,255,255,.06); border: 1px solid var(--line); box-shadow: 0 4px 0 var(--pink); }
+  .dots i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-left: 4px; }
+  .dots i:nth-child(1) { background: var(--yellow) } .dots i:nth-child(2) { background: var(--cyan) } .dots i:nth-child(3) { background: var(--pink) }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px;
+    backdrop-filter: blur(6px); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+  .card h3 { margin: 0 0 6px; font-size: 1.1rem; }
+  .card p { margin: 4px 0; }
+  .muted { color: var(--muted); font-size: .9rem; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .btn { display: inline-block; text-decoration: none; font-weight: 800; font-size: .9rem; padding: 8px 16px; border-radius: 999px;
+    background: #fff; color: #1b1035; }
+  .btn.pink { background: var(--pink); color: #fff; box-shadow: 0 0 14px rgba(255,79,163,.6); }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  .flow-steps { display: flex; justify-content: space-between; position: relative; margin: 14px 4px 4px; }
+  .flow-steps::before { content: ""; position: absolute; left: 10px; right: 10px; top: 9px; height: 3px; background: rgba(255,255,255,.25); }
+  .fs { position: relative; text-align: center; font-size: .75rem; color: var(--muted); width: 20%; }
+  .fs i { display: block; width: 20px; height: 20px; margin: 0 auto 4px; border-radius: 50%; background: var(--night1); border: 3px solid #fff; }
+  .fs.done i { background: var(--green); border-color: var(--green); }
+  .fs.now i { background: var(--pink); border-color: var(--pink); box-shadow: 0 0 12px var(--pink); }
+  .fs.now { color: #fff; font-weight: 800; }
+  .big { font-weight: 800; font-size: 1.05rem; }
+  .big em { font-style: normal; color: var(--yellow); font-size: 1.5rem; }
+  .arch { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-weight: 800; margin-top: 8px; }
+  .arch span { padding: 3px 10px; border-radius: 10px; font-size: .85rem; }
+  .a1 { background: rgba(255,79,163,.2); border: 1px solid var(--pink) } .a2 { background: rgba(62,229,154,.15); border: 1px solid var(--green) } .a3 { background: rgba(255,210,63,.15); border: 1px solid var(--yellow) }
+
+  .bar { height: 12px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35); overflow: hidden; }
+  .bar > div { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--pink)); }
+  .who { display: grid; grid-template-columns: 6.5em 1fr 3.5em; gap: 10px; align-items: center; margin: 8px 0; font-size: .95rem; }
+  .who b { text-align: right; }
+  .task { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+  .task:last-child { border-bottom: 0; }
+  .chip { flex: none; font-size: .78rem; font-weight: 800; padding: 2px 10px; border-radius: 999px; height: fit-content; }
+  .c-done { background: var(--green); color: #062b1a } .c-doing { background: var(--yellow); color: #3a2a00 } .c-todo { background: rgba(255,255,255,.15); color: var(--text) }
+  .links a { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--line); text-decoration: none; font-weight: 800; }
+  .links a:last-child { border-bottom: 0; }
+  .links small { font-weight: 500; color: var(--muted); display: block; }
+
+  .member { text-align: center; }
+  .avatar { width: 64px; height: 64px; margin: 0 auto 6px; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; font-weight: 800; color: #fff; }
+  .m1 { background: var(--pink); box-shadow: 0 0 18px var(--pink) } .m2 { background: #1fb7d6; box-shadow: 0 0 18px var(--cyan) } .m3 { background: #e0a400; box-shadow: 0 0 18px var(--yellow) }
+  .member .role { font-size: .8rem; letter-spacing: .1em; color: var(--muted); }
+  .member ul { text-align: left; margin: 8px 0 0; padding-left: 1.1em; font-size: .9rem; }
+
+  ol.steps { margin: 0; padding-left: 1.3em; } ol.steps li { margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th, td { border-bottom: 1px solid var(--line); padding: 8px 6px; text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: 800; }
+  .warn { margin-top: 30px; background: rgba(255,59,59,.12); border: 1px solid rgba(255,59,59,.6); border-radius: 14px; padding: 12px 16px; font-size: .9rem; }
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 18px 16px 30px; }
+  @media (max-width: 520px) {
+    .stage span { font-size: .8rem } .stage b { font-size: .62rem; letter-spacing: .05em }
+    .who { grid-template-columns: 5.5em 1fr 3em; }
+  }
+  @media (prefers-reduced-motion: reduce) { .star, .win { animation: none } }
 </style>
 </head>
 <body>
-<header>
-  <h1>Giftia 班のハブ</h1>
-  <p>できる日に1回、Giftia を少しずつよくしていく班の入口</p>
+
+<!-- ここの数字を、merge のときに書きかえる（このページは手で更新する） -->
+<script>
+const HUB = {
+  updated: "2026/11/07",
+  presentation: "2026-11-24",
+  start: "2026-10-20",
+  members: [
+    { name: "タケ",       role: "班長",   done: 1, total: 1 },
+    { name: "むっちゃん", role: "コード長", done: 1, total: 1 },
+    { name: "まいまい",   role: "発表長", done: 0, total: 0 }
+  ]
+};
+</script>
+
+<header class="hero">
+  <div class="stars" id="stars"></div>
+  <div class="moon"></div>
+  <div class="hero-inner">
+    <span class="kicker">GIFTIA 開発ハブ</span>
+    <h1><span class="neon-pink">東京</span> <span class="neon-cyan">Drinking Party</span></h1>
+    <p class="sub">送別ギフトを、仲間と納得して決められる Giftia へ。できる日に1回、少しずつ。</p>
+
+    <div class="line">
+      <div class="line-head">
+        <span class="pct">全体 <span id="pct">--</span>%</span>
+        <span class="badge" id="today">今日</span>
+        <span class="muted">発表 11/24 まで あと <b id="left">--</b> 日</span>
+      </div>
+      <div class="track" id="track">
+        <div class="fill" id="fill"></div>
+        <div class="stn" style="left:0%"></div>
+        <div class="stn" id="st2"></div>
+        <div class="stn" id="st3"></div>
+        <div class="stn" style="left:100%"></div>
+        <div class="train" id="train" title="いまここ">🚃</div>
+      </div>
+      <div class="stn-labels">
+        <div class="stage s1" data-from="2026-10-20" data-to="2026-11-09"><b>STAGE 1</b><span>準備・課題</span><small>〜11/9</small></div>
+        <div class="stage s2" data-from="2026-11-10" data-to="2026-11-16"><b>STAGE 2</b><span>制作 前半</span><small>11/10〜</small></div>
+        <div class="stage s3" data-from="2026-11-17" data-to="2026-11-23"><b>STAGE 3</b><span>制作 後半</span><small>11/17〜</small></div>
+        <div class="stage s4" data-from="2026-11-24" data-to="2026-11-24"><b>STAGE 4</b><span>最終発表</span><small>11/24</small></div>
+      </div>
+    </div>
+  </div>
+  <svg class="skyline" id="skyline" viewBox="0 0 1000 170" preserveAspectRatio="none" aria-hidden="true"></svg>
+  <div class="river"></div>
 </header>
+
 <main>
 
-<section>
-  <h2>入口（毎日ここから）</h2>
-  <div class="links">
-    <a href="https://github.com/AR7ST/giftia">giftia<small>画面（giftia-frontend/）と検索 API（backend/）・班のルールは README</small></a>
-    <a href="https://github.com/AR7ST/giftia/pulls">PR 一覧<small>確認待ちの変更</small></a>
-    <a href="https://github.com/AR7ST/giftia/issues">Issue 一覧<small>やることカード</small></a>
-    <a href="https://github.com/users/AR7ST/projects/1">Giftia 改善ボード<small>やること・作業中・完了（GitHub Projects）</small></a>
+  <h2 class="sec-title">🌃 毎日 <span class="dots"><i></i><i></i><i></i></span></h2>
+  <div class="grid">
+    <div class="card">
+      <h3>開発の全体像</h3>
+      <p class="big">🎁 予算と贈る相手から候補を出し、選んだ理由を仲間と共有して決める</p>
+      <div class="flow-steps">
+        <div class="fs done"><i></i>要件</div>
+        <div class="fs now"><i></i>共有</div>
+        <div class="fs"><i></i>AI 活用</div>
+        <div class="fs"><i></i>更新</div>
+        <div class="fs"><i></i>発表</div>
+      </div>
+      <p class="big">発表 11/24 まで あと <em id="left2">--</em> 日</p>
+      <p class="muted" id="next">次の節目：</p>
+      <div class="arch"><span class="a1">🖥 画面 Next.js</span>→<span class="a2">⚙ API FastAPI</span>→<span class="a3">🗄 DB MySQL</span></div>
+      <div class="btns"><a class="btn" href="https://github.com/AR7ST/giftia">giftia を開く →</a></div>
+    </div>
+
+    <div class="card">
+      <h3>進捗ダッシュボード</h3>
+      <p class="muted">閉じた Issue（やることカード）の数。merge のときに手で更新します。</p>
+      <p class="big">完了 <span id="doneAll">-</span> / <span id="totalAll">-</span></p>
+      <div class="bar"><div id="barAll" style="width:0"></div></div>
+      <div id="who"></div>
+      <p class="muted">更新：<span id="updated"></span></p>
+      <div class="btns"><a class="btn" href="https://github.com/users/AR7ST/projects/1">改善ボードを開く →</a></div>
+    </div>
   </div>
-  <p><small>※ リポジトリとボードは非公開です。班のメンバーだけが開けます。</small></p>
-</section>
 
-<section>
-  <h2>全体の流れ</h2>
-  <div class="flow">
-    <div class="box front">画面<small>Next.js・3000番</small></div>
-    <div class="arrow">→</div>
-    <div class="box api">検索 API<small>FastAPI・8000番</small></div>
-    <div class="arrow">→</div>
-    <div class="box db">班の DB<small>MySQL</small></div>
+  <div class="grid" style="margin-top:14px">
+    <div class="card links">
+      <h3>GitHub</h3>
+      <a href="https://github.com/AR7ST/giftia/issues/assigned/@me"><span>📋 自分の担当 Issue<small>自分がやることカード</small></span>→</a>
+      <a href="https://github.com/AR7ST/giftia/pulls/review-requested/@me"><span>👀 レビュー待ちの PR<small>確認をたのまれている回覧</small></span>→</a>
+      <a href="https://github.com/AR7ST/giftia/pulls"><span>🔀 PR 一覧<small>確認待ちの変更</small></span>→</a>
+      <a href="https://github.com/users/AR7ST/projects/1"><span>🗂 Giftia 改善ボード<small>やること → 作業中 → 確認待ち → 完了</small></span>→</a>
+      <p class="muted">※ リポジトリとボードは非公開。班のメンバーと講師だけが開けます。</p>
+    </div>
+
+    <div class="card">
+      <h3>課題の進み具合</h3>
+      <div class="task"><span>課題2　要求定義書・要件定義書</span><span class="chip c-doing">清書・提出</span></div>
+      <div class="task"><span>課題3　班の開発環境を GitHub で共有</span><span class="chip c-doing">再現 OK 待ち</span></div>
+      <div class="task"><span>モノレポ化（講師の指摘）</span><span class="chip c-done">完了</span></div>
+      <div class="task"><span>発展1　AI と GitHub をもっと上手に</span><span class="chip c-todo">これから</span></div>
+      <div class="task"><span>発展2　要件定義をもとに Giftia を更新</span><span class="chip c-todo">これから</span></div>
+    </div>
   </div>
-  <p>どちらも1つのリポジトリ giftia の中にあります（モノレポ）。画面を変えるなら <b>giftia-frontend/</b>、検索の中身（SQL）を変えるなら <b>backend/</b> のフォルダ。両方にまたがる変更も1つの PR で出せます。</p>
-</section>
 
-<section>
-  <h2>改善の流れ（できる日に1回）</h2>
-  <ol>
-    <li>やりたいことを Issue（やることカード）にして、改善ボードに貼る。担当を決める</li>
-    <li><code>git pull</code> で最新にしてから、新しいブランチで変える</li>
-    <li>自分の PC で動かして、変更前／変更後のスクショを撮る</li>
-    <li>PR を出す → 班のだれか1人以上が見て OK → main に取りこむ</li>
-    <li>このページの「改善ログ」に1行足す</li>
-  </ol>
-  <p>班のメンバーなら、<b>だれでも</b>改善できます（班長だけではありません）。</p>
-</section>
+  <h2 class="sec-title">🍻 メンバー <span class="dots"><i></i><i></i><i></i></span></h2>
+  <div class="grid">
+    <div class="card member"><div class="avatar m1">タ</div><div class="role">班長</div><h3>タケ</h3>
+      <ul><li>日程・提出物・全体の進み具合</li><li>最終提言・方向性のまとめ</li></ul></div>
+    <div class="card member"><div class="avatar m2">む</div><div class="role">コード長</div><h3>むっちゃん</h3>
+      <ul><li>使う技術・コードの確認</li><li>骨組み・画面と機能の実装</li></ul></div>
+    <div class="card member"><div class="avatar m3">ま</div><div class="role">発表長</div><h3>まいまい</h3>
+      <ul><li>発表資料の構成・時間配分</li><li>画面デザインや導線の確認</li></ul></div>
+  </div>
 
-<section>
-  <h2>ルールの要点</h2>
-  <ul>
-    <li><b>main に直接 push しない。</b>変更はブランチ＋PR で</li>
-    <li>作業の前に <code>git pull</code>。「今日はだれが何を」を Slack で軽く決める</li>
-    <li>1つの PR には1つの変更だけ</li>
-    <li><b>パスワードなどの秘密（.env の中身）は、GitHub・Slack・生成 AI に貼らない</b></li>
-  </ul>
-  <p>くわしくは giftia の README（2章）。</p>
-  <p class="warn">⚠ このページは公開ページです。秘密の情報・教材の内容・本名・データが写ったスクショは載せません。</p>
-</section>
+  <h2 class="sec-title">🚀 最初だけ <span class="dots"><i></i><i></i><i></i></span></h2>
+  <div class="grid">
+    <div class="card">
+      <h3>自分の PC で動かす</h3>
+      <p class="muted">clone → .env をコピー → API（8000番）と画面（3000番）を起動。くわしくは README の3章。</p>
+      <div class="btns"><a class="btn pink" href="https://github.com/AR7ST/giftia#readme">README を読む →</a></div>
+    </div>
+    <div class="card">
+      <h3>スマホの Claude Code とつなぐ</h3>
+      <ol class="steps">
+        <li>claude.ai/connect-github で GitHub を許可</li>
+        <li>Claude GitHub App に giftia・giftia-hub を入れる</li>
+        <li>Code → 新規 → giftia を選ぶ</li>
+      </ol>
+    </div>
+  </div>
 
-<section>
-  <h2>改善ログ（Giftia の成長日記）</h2>
-  <table>
-    <tr><th>日付</th><th>変えたこと</th><th>PR</th></tr>
-    <tr><td>2026-11-01</td><td>画面を検索 API につないだ（2週目）</td><td>frontend #1</td></tr>
-    <tr><td>2026-11-01</td><td>README を班の案内とルールに書き直した</td><td>frontend #2</td></tr>
-    <tr><td>2026-11-07</td><td>AI の使い方ルール（AGENTS.md）を作った</td><td>giftia #4</td></tr>
-    <tr><td>2026-11-07</td><td>画面と API を1つのリポジトリ giftia にまとめた（モノレポ化）</td><td>giftia #6</td></tr>
-  </table>
-</section>
+  <h2 class="sec-title">🗼 改善の流れ <span class="dots"><i></i><i></i><i></i></span></h2>
+  <div class="card">
+    <ol class="steps">
+      <li><b>Issue を作る</b>：Projects で「Giftia 改善ボード」を選ぶ（やること）</li>
+      <li><b>担当を決めて始める</b>：Assignees に自分（作業中）</li>
+      <li><b>ブランチで変える</b>：main を pull → ブランチ → 変更・確認</li>
+      <li><b>PR を出す</b>：何を／なぜ／確認手順 と Closes #番号（確認待ち）</li>
+      <li><b>本人以外が Approve</b>：手元で動かしてから</li>
+      <li><b>merge</b>：Issue は自動で閉じる（完了）</li>
+      <li><b>全員で再現</b>：pull して「再現 OK」。このページの改善ログに1行</li>
+    </ol>
+  </div>
 
+  <h2 class="sec-title">💡 ナレッジ <span class="dots"><i></i><i></i><i></i></span></h2>
+  <div class="grid">
+    <div class="card">
+      <h3>ルールの要点</h3>
+      <ul>
+        <li><b>main に直接 push しない。</b>変更はブランチ＋PR</li>
+        <li>作業の前に <code>git pull</code></li>
+        <li>1つの PR には1つの変更だけ</li>
+        <li>Approve は本人以外。Approve が付いてから merge</li>
+        <li><b>.env の中身は、GitHub・Slack・生成 AI に貼らない</b></li>
+      </ul>
+      <div class="btns">
+        <a class="btn ghost" href="https://github.com/AR7ST/giftia#readme">README ↗</a>
+        <a class="btn ghost" href="https://github.com/AR7ST/giftia/blob/main/AGENTS.md">AGENTS.md ↗</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>改善ログ（Giftia の成長日記）</h3>
+      <table>
+        <tr><th>日付</th><th>変えたこと</th><th>PR</th></tr>
+        <tr><td>11/01</td><td>画面を検索 API につないだ（2週目）</td><td>#1</td></tr>
+        <tr><td>11/01</td><td>README を班の案内とルールに書き直した</td><td>#2</td></tr>
+        <tr><td>11/07</td><td>AI の使い方ルール（AGENTS.md）を作った</td><td>#4</td></tr>
+        <tr><td>11/07</td><td>画面と API を1つのリポジトリ giftia にまとめた（モノレポ化）</td><td>#6</td></tr>
+        <tr><td>11/07</td><td>このハブを東京の夜景デザインにした</td><td>hub</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="warn">⚠ このページは公開ページです。秘密の情報（.env・API キー・パスワード）、教材の内容、本名、DB のデータが写ったスクショは載せません。</div>
 </main>
-<footer>Giftia 班 ・ 更新したら PR で</footer>
+<footer>Giftia 班（クラス5・東京 Drinking Party）・ 更新したら PR で</footer>
+
+<script>
+(function () {
+  // 星
+  const stars = document.getElementById("stars");
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement("i");
+    s.className = "star";
+    s.style.left = Math.random() * 100 + "%";
+    s.style.top = Math.random() * 55 + "%";
+    s.style.animationDelay = (Math.random() * 3).toFixed(2) + "s";
+    if (Math.random() < .2) { s.style.width = s.style.height = "3px"; }
+    stars.appendChild(s);
+  }
+
+  // ビル群と東京タワー（SVG）
+  const svg = document.getElementById("skyline");
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+  let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const colors = ["#ffe9a3", "#ffd23f", "#38e1ff", "#ff9bd0", "#fff6d0"];
+  // 奥のビル
+  for (let x = 0; x < 1000; ) {
+    const w = 30 + rnd() * 50, h = 40 + rnd() * 70;
+    svg.appendChild(el("rect", { x, y: 170 - h, width: w, height: h, fill: "#24204f" }));
+    x += w + 2;
+  }
+  // 東京タワー
+  const tx = 760;
+  const tower = el("g", {});
+  tower.appendChild(el("path", { d: `M${tx} 8 L${tx + 4} 8 L${tx + 26} 170 L${tx - 22} 170 Z`, fill: "#ff3b3b" }));
+  tower.appendChild(el("path", { d: `M${tx - 12} 100 L${tx + 16} 100 L${tx + 14} 108 L${tx - 10} 108 Z`, fill: "#fff2f2" }));
+  tower.appendChild(el("path", { d: `M${tx - 4} 55 L${tx + 8} 55 L${tx + 7} 61 L${tx - 3} 61 Z`, fill: "#fff2f2" }));
+  for (let y = 20; y < 170; y += 14) tower.appendChild(el("line", { x1: tx - (y / 170) * 22 + 2, y1: y, x2: tx + 4 + (y / 170) * 22 - 2, y2: y, stroke: "#ffb0b0", "stroke-width": 1.2, opacity: .7 }));
+  tower.appendChild(el("circle", { cx: tx + 2, cy: 8, r: 3, fill: "#fff", class: "win" }));
+  svg.appendChild(tower);
+  // 手前のビル（窓あかり）
+  for (let x = 0; x < 1000; ) {
+    const w = 34 + rnd() * 46, h = 30 + rnd() * 80;
+    if (x > tx - 40 && x < tx + 30 && h > 60) { x += 10; continue; }
+    svg.appendChild(el("rect", { x, y: 170 - h, width: w, height: h, fill: "#120f2e" }));
+    for (let wy = 170 - h + 8; wy < 162; wy += 10) {
+      for (let wx = x + 5; wx < x + w - 6; wx += 9) {
+        if (rnd() < .38) {
+          const c = el("rect", { x: wx, y: wy, width: 4, height: 5, fill: colors[Math.floor(rnd() * colors.length)] });
+          if (rnd() < .3) { c.setAttribute("class", "win"); c.style.animationDelay = (rnd() * 4).toFixed(2) + "s"; }
+          svg.appendChild(c);
+        }
+      }
+    }
+    x += w + 3;
+  }
+
+  // 日付の計算
+  const day = 86400000;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const d = s => { const t = new Date(s + "T00:00:00"); return t; };
+  const start = d(HUB.start), end = d(HUB.presentation);
+  const pct = Math.max(0, Math.min(100, Math.round((today - start) / (end - start) * 100)));
+  const left = Math.max(0, Math.round((end - today) / day));
+  document.getElementById("pct").textContent = pct;
+  document.getElementById("left").textContent = left;
+  document.getElementById("left2").textContent = left;
+  document.getElementById("today").textContent = "今日 " + (today.getMonth() + 1) + "/" + today.getDate();
+  document.getElementById("fill").style.width = pct + "%";
+  document.getElementById("train").style.left = pct + "%";
+  const pos = s => Math.round((d(s) - start) / (end - start) * 100) + "%";
+  document.getElementById("st2").style.left = pos("2026-11-10");
+  document.getElementById("st3").style.left = pos("2026-11-17");
+  document.querySelectorAll(".stn").forEach(s => { if (parseFloat(s.style.left) <= pct) s.classList.add("done"); });
+  document.querySelectorAll(".stage").forEach(s => {
+    if (today >= d(s.dataset.from) && today <= d(s.dataset.to)) s.classList.add("now");
+  });
+  const nexts = [["2026-11-10", "制作 前半スタート（第6回ミーティング）"], ["2026-11-17", "制作 後半スタート（第7回ミーティング）"], ["2026-11-24", "最終発表"]];
+  const n = nexts.find(x => d(x[0]) > today);
+  document.getElementById("next").textContent = n ? "次の節目：" + n[1] + " まで あと " + Math.round((d(n[0]) - today) / day) + " 日" : "発表、おつかれさまでした！";
+
+  // 進捗
+  let done = 0, total = 0;
+  const who = document.getElementById("who");
+  HUB.members.forEach(m => {
+    done += m.done; total += m.total;
+    const p = m.total ? Math.round(m.done / m.total * 100) : 0;
+    const row = document.createElement("div");
+    row.className = "who";
+    row.innerHTML = `<span>${m.name}</span><div class="bar"><div style="width:${p}%"></div></div><b>${m.done}/${m.total}</b>`;
+    who.appendChild(row);
+  });
+  document.getElementById("doneAll").textContent = done;
+  document.getElementById("totalAll").textContent = total;
+  document.getElementById("barAll").style.width = (total ? Math.round(done / total * 100) : 0) + "%";
+  document.getElementById("updated").textContent = HUB.updated;
+})();
+</script>
 </body>
 </html>
