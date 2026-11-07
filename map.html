@@ -6,6 +6,7 @@
 <title>コードの地図 ｜ 東京 Drinking Party</title>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/map.css">
+<link rel="stylesheet" href="assets/course.css">
 <style>
   .pages { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
   .pg { text-decoration: none; display: block; }
@@ -24,18 +25,26 @@
   <h1><span class="p">コードの地図</span></h1>
   <p class="lead">Giftia の「画面のここ」が「コードのどこ」なのかを、地図にしました。コードの中身はここには載せていません。行のリンクを押すと GitHub（非公開。班のメンバーと講師だけ）のその行が開きます。商品は説明用の例です。</p>
 
-  <h2 class="sec-title">おすすめの読む順番</h2>
-  <div class="card">
-    <ol class="road">
-      <li><span><b>画面の地図</b>で、画面を触りながら「メモ帳（状態）」がどう変わるかを見る</span></li>
-      <li><span><b>動きの地図</b>で、検索ボタンから DB までの12ステップを最後まで進める</span></li>
-      <li><span><b>変える地図</b>で、「変えたいこと」から変える1行を探す。発展2の前にもう一度</span></li>
-      <li><span><b>データの地図</b>で、DB の列が画面のどこに出るかを線でたどる</span></li>
-      <li><span><b>ファイルの地図</b>の「1行ずつ読む」で、GitHub のコードと並べて読む</span></li>
-      <li><span><b>ことばの地図</b>のクイズで、ここまでを確かめる</span></li>
-      <li><span>エラーが出たら<b>困ったときの地図</b>、PR で迷ったら<b>GitHub の地図</b></span></li>
+  <h2 class="sec-title" id="course-title">おすすめの読む順番</h2>
+  <section class="card" id="learning-course" aria-labelledby="course-title">
+    <p class="muted">好きな地図から読んでも大丈夫です。読み終わったら、この一覧で「確認した」にチェックして、続きを見つけましょう。</p>
+    <ol class="road course-list">
+      <li><div><p><a href="screen.html"><b>画面の地図</b></a>で、画面を触りながら「メモ帳（状態）」がどう変わるかを見る</p><label class="course-check"><input type="checkbox" data-course-step="screen" aria-label="画面の地図を確認した">確認した</label></div></li>
+      <li><div><p><a href="flow.html"><b>動きの地図</b></a>で、検索ボタンからDBまでの12ステップをたどる</p><label class="course-check"><input type="checkbox" data-course-step="flow" aria-label="動きの地図を確認した">確認した</label></div></li>
+      <li><div><p><a href="change.html"><b>変える地図</b></a>で、変えたいことから、変更する場所を探す</p><label class="course-check"><input type="checkbox" data-course-step="change" aria-label="変える地図を確認した">確認した</label></div></li>
+      <li><div><p><a href="data.html"><b>データの地図</b></a>で、DBの列が画面に出るまでを線でたどる</p><label class="course-check"><input type="checkbox" data-course-step="data" aria-label="データの地図を確認した">確認した</label></div></li>
+      <li><div><p><a href="files.html"><b>ファイルの地図</b></a>で、読むガイドとGitHubのコードを並べて見る</p><label class="course-check"><input type="checkbox" data-course-step="files" aria-label="ファイルの地図を確認した">確認した</label></div></li>
+      <li><div><p><a href="words.html"><b>ことばの地図</b></a>で、クイズで確かめ、分からなかった言葉を復習する</p><label class="course-check"><input type="checkbox" data-course-step="words" aria-label="ことばの地図を確認した">確認した</label></div></li>
     </ol>
-  </div>
+    <div class="course-summary" data-course-controls hidden>
+      <p data-course-count role="status" aria-live="polite" aria-atomic="true"></p>
+      <progress value="0" max="6" aria-label="学習コースの確認済みステップ数"></progress>
+      <div class="course-actions"><a class="btn pink" href="screen.html" data-course-next>次に読む：画面の地図</a><button class="btn course-reset" type="button" data-course-reset>チェックをすべて外す</button></div>
+      <p class="muted" data-course-storage></p>
+    </div>
+    <noscript><p class="muted">チェックの保存にはJavaScriptが必要です。各地図へのリンクはそのまま利用できます。</p></noscript>
+    <p class="muted">エラーが出たら<a href="trouble.html">困ったときの地図</a>、PRで迷ったら<a href="git.html">GitHubの地図</a>へ。</p>
+  </section>
 
   <h2 class="sec-title">地図の一覧 <small>8ページ</small></h2>
   <div class="pages">
@@ -73,5 +82,6 @@
   <footer>Giftia 班（クラス5・東京 Drinking Party）</footer>
 </div>
 <script src="assets/map.js"></script>
+<script src="assets/course.js"></script>
 </body>
 </html>
